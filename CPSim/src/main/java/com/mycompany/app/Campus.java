@@ -116,14 +116,17 @@ public class Campus {
              
     }
     
-    public static void main(String[] args)
+    
+    public static Calendar getTime() {
+		return time;
+	}
+
+	public static void main(String[] args)
     {
         try {
             Campus campus = new Campus();
             campus.initSections();
         } catch (Exception ex) {
         }
-        
-        
     }
 }

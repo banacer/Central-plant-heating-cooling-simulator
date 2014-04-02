@@ -50,16 +50,17 @@ public class Building implements Playable{
 
     @Override
     public void nextStep() throws Exception {
-        int seconds = 0;
+        //heat building
+    	
+    	int seconds = 0;
         for(Section s: sections)
         {
             s.nextStep();
             seconds += s.doorOpen();            
         }
-    }
-    public double getVolumePerAHU()
-    {
-        return totalVolume/(double)ahus.size();
-    }
+        
+        //cool building
+        
+    }    
 }
 

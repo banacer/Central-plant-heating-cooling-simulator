@@ -22,7 +22,7 @@ public class AHU {
     private static double airDensity = 0.075; //lb/ft3
     private static double waterDensity = 8.329;
     private static double waterSpecificHeat = 1.002;
-    private static double hwe = 1075.66;    
+    private static double hwe = 1075.66;
     //OBJECT DATA
     private double chilledWaterTankTemperature;
     private double temperatureChangeSetPoint;
@@ -41,7 +41,7 @@ public class AHU {
         psychometric.loadTable();
         currentCFM = 1000;
         this.building = building;
-        previousTemp = 0;
+        previousTemp = 70;
     }
     
     /**
@@ -50,7 +50,7 @@ public class AHU {
      * @return 
      */
     public Air coolAir(Air supplyAir)
-    {
+    {    	
         //FIRST YOU SHOULD THROW 1/3 AND GET IT FROM THE OUTSIDE
         
         //THEN COOL THE AIR
@@ -58,18 +58,21 @@ public class AHU {
         returnAir.quantity = supplyAir.quantity;
         returnAir.temperature = chilledWaterTankTemperature;
         returnAir.relativeHumidity = psychometric.getHumidityRatio((int) returnAir.temperature);
-        double mass = building.getVolumePerAHU()*airDensity*(targetAirTemperature - supplyAir.temperature)/
-                (returnAir.temperature-supplyAir.temperature);
-        currentCFM = mass/airDensity;
-        if(currentCFM > maxCFM)
-            currentCFM = maxCFM;
         //NOW compute total heat transfered to ChilledWater
         //sensible heat computation
-        double sensibleHeat = building.getVolumePerAHU()*airDensity*(supplyAir.temperature - returnAir.temperature);
+        double sensibleHeat = currentCFM*airDensity*(supplyAir.temperature - returnAir.temperature);
         //latent heat computation
-        double latentHeat = building.getVolumePerAHU()*airDensity*hwe*(supplyAir.relativeHumidity - returnAir.relativeHumidity);
+        double latentHeat = currentCFM*airDensity*hwe*(supplyAir.relativeHumidity - returnAir.relativeHumidity);
         
+        //heat the chilled water
+        heatChilledWater(sensibleHeat + latentHeat);
+        //change chilled water
+        coolChilledWaterTank();
         
+        // Adjust CFM for next time
+    	chooseFanSpeed();
+    	
+    	previousTemp = building.currentTemperature;
         return returnAir;
     }
     /**
@@ -79,7 +82,7 @@ public class AHU {
     private void heatChilledWater(double heat)
     {
         chilledWaterTankTemperature = heat/(chilledWaterTank*waterDensity*waterSpecificHeat) + chilledWaterTankTemperature;
-        coolChilledWaterTank();        
+        coolChilledWaterTank();
     }
     
     /**
@@ -100,6 +103,25 @@ public class AHU {
         
         returnedWater.amount = waterVolumeNeeded;
         tunnelStage.returnWater(returnedWater);        
+    }
+    
+    private void chooseFanSpeed()
+    {
+    	double multiplier = 5;
+    	if(building.currentTemperature < targetAirTemperature)
+    	{
+    		currentCFM = 0;
+    	}
+    	else
+    	{
+    		if(currentCFM == 0)
+    			currentCFM = 1000;
+    		else
+    		{
+    			double changeRate = (building.currentTemperature - previousTemp) / previousTemp;
+    			currentCFM *= (1 + changeRate*multiplier);
+    		}
+    	}
     }
     
     
