@@ -28,8 +28,8 @@ public class Campus {
 
     public Campus() {
         tunnel = new Tunnel();
-        buildings = new Vector<>();
-        sections = new Vector<>();
+        buildings = new Vector<Building>();
+        sections = new Vector<Section>();
         time = new GregorianCalendar();
     }
     

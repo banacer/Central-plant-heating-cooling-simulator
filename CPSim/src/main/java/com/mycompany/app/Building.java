@@ -27,9 +27,9 @@ public class Building implements Playable{
     {
         status = null;
         people = 0;
-        sections = new Vector<>();
+        sections = new Vector<Section>();
         stage = tunnel.stage[Functions.EquiRand(0, Tunnel.size)];
-        ahus = new Vector<>();
+        ahus = new Vector<AHU>();
         totalVolume = 800000;
         for(int i = 0; i < 12; i++)
             ahus.add(new AHU(this));
@@ -39,7 +39,7 @@ public class Building implements Playable{
         this.number = number;
         status = null;
         people = 0;
-        sections = new Vector<>();
+        sections = new Vector<Section>();
     }
     
     
