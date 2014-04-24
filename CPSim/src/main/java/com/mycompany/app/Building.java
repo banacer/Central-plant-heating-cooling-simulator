@@ -58,7 +58,6 @@ public class Building implements Playable{
             s.nextStep();
             seconds += s.doorOpen();            
         }
-        
         //cool building
         
     }    
