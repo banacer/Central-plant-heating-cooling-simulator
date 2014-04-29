@@ -61,7 +61,8 @@ public class Section implements Playable{
     
     public void studentsExitClass(int number)
     {
-        studentsInClass -= number;
+        double density = normalDistribution.density(minutesDiff(new Date(Campus.time.getTimeInMillis()),new Date(endTime.getTimeInMillis())));
+        studentsInClass -= (int) Math.round(density*(double)students);
     }
     
     public double getHeatGeneratedInClass()
@@ -71,8 +72,10 @@ public class Section implements Playable{
     
     public double getHeatGeneratedFromDoor()
     {
-        
-        return 0;
+        int studentEnter = (int) Math.round(normalDistribution.density(minutesDiff(new Date(Campus.time.getTimeInMillis()),new Date(endTime.getTimeInMillis())))*(double)students);
+        int studentExit = (int) Math.round(normalDistribution.density(minutesDiff(new Date(Campus.time.getTimeInMillis()),new Date(endTime.getTimeInMillis())))*(double)students);
+        //Take the sum of the times and passe it to heatbyTime
+        return heatbyTime(studentEnter + studentExit);
     }
     public int doorOpen()
     {
@@ -83,5 +86,9 @@ public class Section implements Playable{
         if( earlierDate == null || laterDate == null ) return 0;
 
         return (int)((laterDate.getTime()/60000) - (earlierDate.getTime()/60000));
+    }
+    private double heatbyTime(int seconds)
+    {
+        
     }
 }
