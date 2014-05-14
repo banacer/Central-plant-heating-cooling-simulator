@@ -18,11 +18,17 @@ import org.apache.commons.math3.distribution.NormalDistribution;
 public class Section implements Playable{
     private static NormalDistribution normalDistribution = new NormalDistribution(-2, 2.5);
     private static double heatGeneratedByPerson = 9;
+    private static double doorHeight = 10;
+    private static double doorWidth = 8;
+    private static double dischargeCoefficent = 0.6;
+    private static double gravity = 32.2;
+    
      int students;
      int studentsInClass;
      Building location;
      Calendar startTime;
      Calendar endTime;
+     double generatedHeat;
 
     public Section(int Students, Building location, Calendar startTime, Calendar endTime) {
         studentsInClass = 0;
@@ -51,7 +57,10 @@ public class Section implements Playable{
 
     @Override
     public void nextStep() throws Exception {
-        
+        double heat = 0;
+        heat += getHeatGeneratedInClass();
+        heat += getHeatGeneratedFromDoor();
+        generatedHeat = heat;
     }
     public void studentsEnterClass()
     {
@@ -89,6 +98,14 @@ public class Section implements Playable{
     }
     private double heatbyTime(int seconds)
     {
-        
+        double inTemp = FtoK(location.currentTemperature);
+        double exTemp = FtoK(location.weather.currentTemp);
+        double airEscaping = (1/3)*(doorHeight * doorWidth * dischargeCoefficent)*Math.sqrt(gravity * doorHeight * (exTemp - inTemp)/ +inTemp);
+        double btuPerSec = airEscaping * 1.08 * (exTemp - inTemp);
+        return btuPerSec * seconds;
+    }
+    public double FtoK(double F)
+    {        
+        return (F - 32)/1.8 + 273.15;
     }
 }

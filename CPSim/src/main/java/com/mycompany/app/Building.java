@@ -14,6 +14,7 @@ import java.util.Vector;
  */
 public class Building implements Playable{
 
+    private static double airDensity = 0.075; //lb/ft3
     int number;
     TunnelStage stage; // this refers to what part of the tunnel will it be fed from
     BuildingStatus status;
@@ -22,8 +23,9 @@ public class Building implements Playable{
     Vector<AHU> ahus;
     double totalVolume;
     double currentTemperature;
+    Weather weather;
     
-    public Building(Tunnel tunnel)
+    public Building(Tunnel tunnel, Weather weather)
     {
         status = null;
         people = 0;
@@ -33,6 +35,7 @@ public class Building implements Playable{
         totalVolume = 800000;
         for(int i = 0; i < 12; i++)
             ahus.add(new AHU(this));
+        this.weather = weather;
     }
 
     public Building(int number) {
@@ -52,14 +55,23 @@ public class Building implements Playable{
     public void nextStep() throws Exception {
         //heat building
     	
-    	int seconds = 0;
+    	double totalHeat = 0;
         for(Section s: sections)
         {
             s.nextStep();
-            seconds += s.doorOpen();            
+            totalHeat += s.generatedHeat;
         }
+        //heat the building from the generatedHeat
+        heatBuilding(totalHeat);        
         //cool building
         
-    }    
+        
+    }
+    public void heatBuilding(double btu)
+    {
+        double totalHeat = (totalVolume * airDensity * currentTemperature + btu);
+        double newTemp = totalHeat / (totalVolume * airDensity);
+        currentTemperature = newTemp;
+    }
 }
 

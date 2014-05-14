@@ -38,7 +38,7 @@ public class Campus {
         tunnel.init();
         for(int i = 0; i < buildings.size(); i++)
         {
-            buildings.add(new Building(tunnel));            
+            buildings.add(new Building(tunnel,weather));            
         }
         
     }
