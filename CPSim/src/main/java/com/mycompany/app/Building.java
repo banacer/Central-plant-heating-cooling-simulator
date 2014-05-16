@@ -73,5 +73,9 @@ public class Building implements Playable{
         double newTemp = totalHeat / (totalVolume * airDensity);
         currentTemperature = newTemp;
     }
+    public void coolBuilding()
+    {
+        
+    }
 }
 

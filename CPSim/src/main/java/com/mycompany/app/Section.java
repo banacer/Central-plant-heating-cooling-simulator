@@ -11,10 +11,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
-/**
- *
- * @author nkhalil
- */
 public class Section implements Playable{
     private static NormalDistribution normalDistribution = new NormalDistribution(-2, 2.5);
     private static double heatGeneratedByPerson = 9;

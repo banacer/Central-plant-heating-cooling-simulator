@@ -75,6 +75,7 @@ public class AHU {
     	previousTemp = building.currentTemperature;
         return returnAir;
     }
+    
     /**
      * This function takes the heat in BTU and heats the chilled water
      * @param heat in BTU
@@ -114,13 +115,13 @@ public class AHU {
     	}
     	else
     	{
-    		if(currentCFM == 0)
-    			currentCFM = 1000;
-    		else
-    		{
-    			double changeRate = (building.currentTemperature - previousTemp) / previousTemp;
-    			currentCFM *= (1 + changeRate*multiplier);
-    		}
+            if(currentCFM == 0)
+                    currentCFM = 1000;
+            else
+            {
+                    double changeRate = (building.currentTemperature - previousTemp) / previousTemp;
+                    currentCFM *= (1 + changeRate*multiplier);
+            }
     	}
     }
     
