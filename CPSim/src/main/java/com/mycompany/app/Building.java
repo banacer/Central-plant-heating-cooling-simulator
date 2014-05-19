@@ -23,7 +23,10 @@ public class Building implements Playable{
     Vector<AHU> ahus;
     double totalVolume;
     double currentTemperature;
+    double currentHumidity;
     Weather weather;
+    private Psychometric psychometric;
+    
     
     public Building(Tunnel tunnel, Weather weather)
     {
@@ -64,7 +67,7 @@ public class Building implements Playable{
         //heat the building from the generatedHeat
         heatBuilding(totalHeat);        
         //cool building
-        
+        coolBuilding();
         
     }
     public void heatBuilding(double btu)
@@ -75,7 +78,23 @@ public class Building implements Playable{
     }
     public void coolBuilding()
     {
+        for(AHU ahu: ahus)
+        {
+            //SEND THE AIR TO AHU
+            Air air = ahu.coolAir(currentTemperature, currentHumidity);
+            //MIX IT WITH CURRENT AIR
+            mixAir(air);
+        }
+    }
+    public void mixAir(Air air)
+    {
+        double cooledAirMass = air.quantity*airDensity;
+        double existingAirMass = (totalVolume-air.quantity)*airDensity;
+        
+        double newHumidity = (cooledAirMass*psychometric.getHumidityRatio((int) Math.floor(air.temperature))+existingAirMass*
+                psychometric.getHumidityRatio((int) Math.floor(currentTemperature)))/(existingAirMass+cooledAirMass);
         
     }
+    
 }
 

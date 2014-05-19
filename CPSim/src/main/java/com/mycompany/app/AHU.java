@@ -49,8 +49,9 @@ public class AHU {
      * @param supplyAir
      * @return 
      */
-    public Air coolAir(Air supplyAir)
-    {    	
+    public Air coolAir(double Temperature, double humidity)
+    {
+        Air supplyAir = new Air(currentCFM, Temperature, humidity);
         //FIRST YOU SHOULD THROW 1/3 AND GET IT FROM THE OUTSIDE
         
         //THEN COOL THE AIR
