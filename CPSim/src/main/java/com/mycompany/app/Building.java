@@ -1,17 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.mycompany.app;
 
 import java.util.Vector;
 
-/**
- *
- * @author nkhalil
- */
 public class Building implements Playable{
 
     private static double airDensity = 0.075; //lb/ft3
@@ -35,7 +25,7 @@ public class Building implements Playable{
         sections = new Vector<Section>();
         stage = tunnel.stage[Functions.EquiRand(0, Tunnel.size)];
         ahus = new Vector<AHU>();
-        totalVolume = 800000;
+        
         for(int i = 0; i < 12; i++)
             ahus.add(new AHU(this));
         this.weather = weather;
@@ -51,13 +41,14 @@ public class Building implements Playable{
     
     @Override
     public void init() throws Exception{
-        
+        totalVolume = 800000;
+        currentTemperature = 69;
+        currentHumidity = 0.5;
     }
 
     @Override
-    public void nextStep() throws Exception {
+    public void nextStep() throws Exception {        
         //heat building
-    	
     	double totalHeat = 0;
         for(Section s: sections)
         {
@@ -68,7 +59,6 @@ public class Building implements Playable{
         heatBuilding(totalHeat);        
         //cool building
         coolBuilding();
-        
     }
     public void heatBuilding(double btu)
     {
@@ -90,10 +80,15 @@ public class Building implements Playable{
     {
         double cooledAirMass = air.quantity*airDensity;
         double existingAirMass = (totalVolume-air.quantity)*airDensity;
-        
+        //COMPUTE NEW HUMIDITY RATIO
         double newHumidity = (cooledAirMass*psychometric.getHumidityRatio((int) Math.floor(air.temperature))+existingAirMass*
                 psychometric.getHumidityRatio((int) Math.floor(currentTemperature)))/(existingAirMass+cooledAirMass);
+        //COMPUTE NEW TEMPERATURE
+        double newTemp = ((totalVolume-air.quantity)*airDensity*currentTemperature + air.quantity*airDensity*air.temperature)/(totalVolume*airDensity);
         
+        //STORE AS CURRENT PARAMETERS
+        currentTemperature = newTemp;
+        currentHumidity = newHumidity/psychometric.getHumidityRatio((int) currentTemperature);
     }
     
 }

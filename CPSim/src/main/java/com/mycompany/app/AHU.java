@@ -12,17 +12,17 @@ package com.mycompany.app;
  */
 public class AHU {
     //CLASS DATA
-    private static double maxCoolingCapacity = 14; //KW
-    private static double sensibleCoolingCapacity = 10.2; //KW
-    private static double waterflow = 608; //gallons per hour
-    private static double maxCFM = 1353; //CFM
-    private static double chilledWaterTank = 15; //Gal    
+    private static final double maxCoolingCapacity = 14; //KW
+    private static final double sensibleCoolingCapacity = 10.2; //KW
+    private static final double waterflow = 608; //gallons per hour
+    private static final double maxCFM = 1353; //CFM
+    private static final double chilledWaterTank = 15; //Gal    
     
-    private static double targetAirTemperature = 70; //F    
-    private static double airDensity = 0.075; //lb/ft3
-    private static double waterDensity = 8.329;
-    private static double waterSpecificHeat = 1.002;
-    private static double hwe = 1075.66;
+    private static final double targetAirTemperature = 70; //F    
+    private static final double airDensity = 0.075; //lb/ft3
+    private static final double waterDensity = 8.329;
+    private static final double waterSpecificHeat = 1.002;
+    private static final double hwe = 1075.66;
     //OBJECT DATA
     private double chilledWaterTankTemperature;
     private double temperatureChangeSetPoint;
@@ -53,7 +53,7 @@ public class AHU {
     {
         Air supplyAir = new Air(currentCFM, Temperature, humidity);
         //FIRST YOU SHOULD THROW 1/3 AND GET IT FROM THE OUTSIDE
-        
+        building.
         //THEN COOL THE AIR
         Air returnAir = new Air();
         returnAir.quantity = supplyAir.quantity;
@@ -106,7 +106,7 @@ public class AHU {
         returnedWater.amount = waterVolumeNeeded;
         tunnelStage.returnWater(returnedWater);        
     }
-    
+    //This function should be changed to match how it works in real-world. This means 
     private void chooseFanSpeed()
     {
     	double multiplier = 5;
@@ -124,6 +124,10 @@ public class AHU {
                     currentCFM *= (1 + changeRate*multiplier);
             }
     	}
+    }
+    private Air mixAir(Air air1, double throwRatio, Air air2)
+    {
+        
     }
     
     
