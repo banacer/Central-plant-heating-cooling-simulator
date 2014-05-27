@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 /**
@@ -20,8 +22,7 @@ public class VariousTest {
     
     public static void main(String[] args)
     {
-        double x = 3.5;
-        System.out.println(Math.round(x));
+        testMixAirAHU();
     }
     public static void timeDifference()
     {
@@ -41,6 +42,22 @@ public class VariousTest {
     {
         NormalDistribution normalDistribution = new NormalDistribution(-2, 2.5);
         System.out.println(normalDistribution.density(-3)*25);
+        
+    }
+    public static void testMixAirAHU()
+    {
+        try {
+            Weather weather = new Weather();
+            Building building = new Building(new Tunnel(),weather);
+            AHU ahu = new AHU(building);
+            weather.init();
+            building.init();
+            weather.nextStep();
+            Air res = ahu.coolAir(72, .5);
+            System.out.println(res.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         
     }
 }

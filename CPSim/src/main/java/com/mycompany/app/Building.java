@@ -35,7 +35,7 @@ public class Building implements Playable{
         this.number = number;
         status = null;
         people = 0;
-        sections = new Vector<Section>();
+        sections = new Vector<Section>();        
     }
     
     

@@ -22,6 +22,7 @@ public class AHU {
     private static final double airDensity = 0.075; //lb/ft3
     private static final double waterDensity = 8.329;
     private static final double waterSpecificHeat = 1.002;
+    private static final double throwAirRatio = 1/3;
     private static final double hwe = 1075.66;
     //OBJECT DATA
     private double chilledWaterTankTemperature;
@@ -53,7 +54,8 @@ public class AHU {
     {
         Air supplyAir = new Air(currentCFM, Temperature, humidity);
         //FIRST YOU SHOULD THROW 1/3 AND GET IT FROM THE OUTSIDE
-        building.
+        Air outsideAir = new Air(supplyAir.quantity, building.weather.currentTemp, building.weather.currentHum);
+        mixAir(supplyAir, throwAirRatio, outsideAir);
         //THEN COOL THE AIR
         Air returnAir = new Air();
         returnAir.quantity = supplyAir.quantity;
@@ -125,9 +127,18 @@ public class AHU {
             }
     	}
     }
-    private Air mixAir(Air air1, double throwRatio, Air air2)
+    public Air mixAir(Air air1, double throwRatio, Air air2)
     {
+        double air1Hum = psychometric.getHumidityRatio((int) air1.temperature) * air1.relativeHumidity;
+        double air2Hum = psychometric.getHumidityRatio((int) air2.temperature) * air2.relativeHumidity;        
         
+        double newTemp =  air1.temperature*(1 - throwRatio) + air2.temperature * throwRatio;
+        System.out.println(newTemp);
+        double humRatio = air1Hum*(1 - throwRatio) + air2Hum * throwRatio;
+        
+        double newHum = humRatio / psychometric.getHumidityRatio((int) newTemp);
+        
+        return new Air(air1.quantity, newTemp, newHum);
     }
     
     

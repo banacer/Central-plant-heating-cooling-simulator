@@ -23,5 +23,9 @@ public class Air {
         this.temperature = temperature;
         this.relativeHumidity = relativeHumidity;
     }
+    public String toString()
+    {
+        return quantity+" Ft3, "+temperature+ " F ,"+relativeHumidity+" %";
+    }
     
 }

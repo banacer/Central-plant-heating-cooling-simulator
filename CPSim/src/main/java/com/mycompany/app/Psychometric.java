@@ -44,6 +44,7 @@ public class Psychometric {
                     if(!Character.isDigit(val.charAt(0)))
                         val = "-"+val.substring(1);                    
                     table[y][x] = Double.parseDouble(val);
+                    x++;
                 }
                 y++;
             }
@@ -61,9 +62,9 @@ public class Psychometric {
         return true;
     }
     public double getHumidityRatio(int temp)
-    {
-        int index = temp + 80;
-        int difference = (int) table[index][0] - temp;
-        return table[index + difference][2];
+    {        
+        int index = temp + 80 - 1;
+        int difference = temp - (int) table[index][0];
+        return table[index + difference][1];
     }
 }
