@@ -23,7 +23,10 @@ public class Building implements Playable{
         status = null;
         people = 0;
         sections = new Vector<Section>();
-        stage = tunnel.stage[Functions.EquiRand(0, Tunnel.size)];
+        int index = Functions.EquiRand(0, Tunnel.size);
+        System.out.println("Index = "+index);
+        stage = tunnel.stage[index];
+        System.out.println(stage.toString());
         ahus = new Vector<AHU>();
         
         for(int i = 0; i < 12; i++)

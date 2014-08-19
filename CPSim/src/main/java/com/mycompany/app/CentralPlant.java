@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.mycompany.app;
 
 /**
@@ -15,15 +9,28 @@ public class CentralPlant implements Playable{
     private double tons;
     private double enterTemp;
     private double exitTemp;
+    private double cutProduction;
 
+    public CentralPlant(double chw, double tons, double enterTemp, double exitTemp, double cutProduction) {
+        this.chw = chw;
+        this.tons = tons;
+        this.enterTemp = enterTemp;
+        this.exitTemp = exitTemp;
+        this.cutProduction = cutProduction;
+    }
+    
+    
     @Override
     public void init() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        chw = 35000;
+        tons = 10000;
+        enterTemp = 53;
+        exitTemp = 44;
     }
 
     @Override
     public void nextStep() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
     
     

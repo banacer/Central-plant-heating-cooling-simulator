@@ -16,9 +16,6 @@ public class TunnelStage {
     double supplyTemp;
     double returnTemp;
 
-    public TunnelStage() {
-    }
-
     public TunnelStage(double supplyFlow, double returnFlow, double supplyTemp, double returnTemp) {
         this.supplyFlow = supplyFlow;
         this.returnFlow = returnFlow;
@@ -40,5 +37,11 @@ public class TunnelStage {
         
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "TunnelStage{" + "supplyFlow=" + supplyFlow + ", returnFlow=" + returnFlow + ", supplyTemp=" + supplyTemp + ", returnTemp=" + returnTemp + '}';
+    }
+    
            
 }

@@ -6,12 +6,9 @@
 
 package com.mycompany.app;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.math3.distribution.NormalDistribution;
 
 /**
@@ -47,9 +44,11 @@ public class VariousTest {
     public static void testMixAirAHU()
     {
         try {
+            Tunnel tunnel = new Tunnel();
             Weather weather = new Weather();
-            Building building = new Building(new Tunnel(),weather);
+            Building building = new Building(tunnel,weather);
             AHU ahu = new AHU(building);
+            tunnel.init();
             weather.init();
             building.init();
             weather.nextStep();
